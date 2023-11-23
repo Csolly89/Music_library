@@ -9,26 +9,34 @@ function App() {
   const [data,setData] = useState([])
 
   useEffect(() => {
-    const fetchData = async () => {
-      const url = 'https://itunes.apple.com/search?term=parkway%20drive'
-      const response = await fetch(url)
-      const data  = await response.json()
-
-      if (data.results) {
-        setData(data.results)
-      } else {
-        setData([])
-        setMessage ('Not Found')
-      }
-    }
-    fetchData()
-  }, [search])
+    if (search) {
+      const fetchData = async () => {
+        const url = encodeURI(`https://itunes.apple.com/search?term=${search}`)
+        const response = await fetch(url)
+        const data = await response.json()
   
+        if (data.results.length > 0) {
+          setData(data.results)
+        } else {
+          setData([])
+          setMessage('Not Found')
+        }
+      }
+  
+      fetchData()
+    }
+  }, [search])
+
+  const handleSearch = (e, term) => {
+    e.preventDefault()
+    setSearch(term)
+  }
+
   return (
     <div className="App">
-      <SearchBar />
+      <SearchBar handleSearch={handleSearch}/>
       {message}
-      <Gallery />
+      <Gallery data={data} />
     </div>
   );
 }
