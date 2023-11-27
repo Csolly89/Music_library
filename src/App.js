@@ -24,6 +24,8 @@ function App() {
       }
   
       fetchData()
+    } else {
+      if (data) setData([])
     }
   }, [search])
 
