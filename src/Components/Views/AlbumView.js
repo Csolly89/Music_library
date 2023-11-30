@@ -1,12 +1,14 @@
 // These components will be making separate API calls from the app
 // component to serve specific data about our artist
 import { useState, useEffect } from 'react'
-import { useParams } from 'react-router-dom'
+import { useParams, useNavigate } from 'react-router-dom'
 
 function AlbumView() {
     const [ albumData, setAlbumData ] = useState([])
 
     const { id } = useParams()
+
+    const navigate = useNavigate()
 
     useEffect (() => {
         const fetchData = async () => {
@@ -27,8 +29,20 @@ function AlbumView() {
             </div>
         )
     })
+
+    const navButtons = () => {
+        return(
+            <div>
+                <button onClick={() => navigate(-1)}>back</button>
+                |
+                <button onClick={() => navigate('/')}>home</button>
+            </div>
+        )
+    }
+
     return (
         <div>
+            {navButtons()}
             <p>Album Data Goes Here!</p>
             <p>ID: {id}</p>
             {songDisplay}
